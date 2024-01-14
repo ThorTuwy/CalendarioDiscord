@@ -14,6 +14,13 @@ meses=[
     "Septiembre", "Octubre", "Noviembre", "Diciembre"
 ]
 
+StartMessege="""**Versión web:**
+https://nextcloud.tuwy.win/apps/calendar/dayGridMonth/now
+
+También podéis poner los exámenes/trabajos de este horario en vuestro personal, "suscribiendo" a este horario: 
+https://nextcloud.tuwy.win/remote.php/dav/public-calendars/nMFRLZPC3Bp6Kb4g?export
+"""
+
 GUILD_ID=int(os.getenv('GUILD_ID'))
 CHANNEL_ID=int(os.getenv('CHANNEL_ID'))
 
@@ -33,8 +40,10 @@ async def añadair_calendario(ctx: discord.ApplicationContext,titulo,dia:int,mes
         
         await bot.get_guild(GUILD_ID).get_channel(CHANNEL_ID).purge()
 
+        await bot.get_guild(GUILD_ID).get_channel(CHANNEL_ID).send(StartMessege)
+
         for month in os.getenv("months").split(","):
-            month_name=meses[int(month)]
+            month_name=meses[int(month)-1]
             
             ScreenshotsFil=[]
             
