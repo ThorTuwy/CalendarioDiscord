@@ -15,7 +15,7 @@ meses=[
 ]
 
 StartMessege="""**Versión web:**
-https://nextcloud.tuwy.win/apps/calendar/dayGridMonth/now
+https://nextcloud.tuwy.win/apps/calendar/embed/nMFRLZPC3Bp6Kb4g/dayGridMonth/now
 
 También podéis poner los exámenes/trabajos de este horario en vuestro personal, "suscribiendo" a este horario: 
 https://nextcloud.tuwy.win/remote.php/dav/public-calendars/nMFRLZPC3Bp6Kb4g?export
