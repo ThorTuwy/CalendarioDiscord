@@ -16,7 +16,7 @@ async def calenderMonth(month):
       await page.set_viewport_size({"width": 1920, "height": 852})
       await page.goto(f"https://nextcloud.tuwy.win/apps/calendar/embed/nMFRLZPC3Bp6Kb4g/dayGridMonth/2024-{month}-01")
 
-      await asyncio.sleep(1)
+      await asyncio.sleep(3)
 
       calender = await page.wait_for_selector(".app-calendar-public-embedded")
 
