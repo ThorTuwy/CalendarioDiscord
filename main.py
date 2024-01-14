@@ -8,6 +8,12 @@ from datetime import datetime
 from dotenv import load_dotenv
 load_dotenv()
 
+meses=[
+    "Enero", "Febrero", "Marzo", "Abril",
+    "Mayo", "Junio", "Julio", "Agosto",
+    "Septiembre", "Octubre", "Noviembre", "Diciembre"
+]
+
 GUILD_ID=int(os.getenv('GUILD_ID'))
 CHANNEL_ID=int(os.getenv('CHANNEL_ID'))
 
@@ -28,6 +34,8 @@ async def añadair_calendario(ctx: discord.ApplicationContext,titulo,dia:int,mes
         await bot.get_guild(GUILD_ID).get_channel(CHANNEL_ID).purge()
 
         for month in os.getenv("months").split(","):
+            month_name=meses[int(month)]
+            
             ScreenshotsFil=[]
             
             month=str(month)
@@ -39,7 +47,7 @@ async def añadair_calendario(ctx: discord.ApplicationContext,titulo,dia:int,mes
 
 
 
-            await bot.get_guild(GUILD_ID).get_channel(CHANNEL_ID).send(files=ScreenshotsFil)
+            await bot.get_guild(GUILD_ID).get_channel(CHANNEL_ID).send(f"{month_name}: ",files=ScreenshotsFil)
 
             
 
