@@ -17,7 +17,7 @@ meses=[
 StartMessege="""**Versión web:**
 https://nextcloud.tuwy.win/apps/calendar/embed/nMFRLZPC3Bp6Kb4g/dayGridMonth/now
 
-También podéis poner los exámenes/trabajos de este horario en vuestro personal, "suscribiendo" a este horario: 
+También podéis poner los exámenes/trabajos de este horario en el vuestro personal, "suscribiendos" a este horario: 
 https://nextcloud.tuwy.win/remote.php/dav/public-calendars/nMFRLZPC3Bp6Kb4g?export
 """
 
@@ -29,12 +29,41 @@ intents.members = True
 
 bot = discord.Bot(intents=intents)
 
+
+
+
+conversorHoras=[[23,59],[8,15],[9,10],[10,5] , [11,30],[12,25],[13,20]]
+
+
+Running=False
+
 @bot.slash_command(guild_ids=[GUILD_ID])  # Create a slash command
-async def añadair_calendario(ctx: discord.ApplicationContext,titulo,dia:int,mes:int,hora:int):
+async def añadair_calendario(ctx: discord.ApplicationContext,titulo,dia:int,mes:int,hora:discord.Option(str, choices=["Ninguna en especifico","1º","2º","3º","4º","5º","6º"]) ):
     """Añade una examen/trabajo al calendario"""
+    global Running
+    
+    if Running:
+        await ctx.respond(f"Bot sigue en ejecucion, porfavor intentelo cuando termine",delete_after=5)
+        return
+
     try:
-        dateObj=datetime(datetime.now().year, mes, dia, hora)
-        await ctx.respond(f"Añadiendo el examen/trabajo al calendario")
+        Running=True
+
+        rato=[]
+
+        if hora=="Ninguna en especifico":
+            hora=0
+        else:
+            hora=int(hora[0])
+
+        if hora<0 or hora>7:
+            await ctx.respond(f"La hora no es correcta, tiene que poner un numero que represente la hora que es, si es a 3º hora ponga un 3, si no tiene hora concreta ponga un 0")
+            return
+
+        rato=conversorHoras[hora]
+
+        dateObj=datetime(datetime.now().year, mes, dia, rato[0],rato[1])
+        await ctx.respond(f"Añadiendo el examen/trabajo al calendario",delete_after=5)
         Calendario.addObjectToCalender(titulo,dateObj)
 
         
@@ -57,16 +86,10 @@ async def añadair_calendario(ctx: discord.ApplicationContext,titulo,dia:int,mes
 
 
             await bot.get_guild(GUILD_ID).get_channel(CHANNEL_ID).send(f"{month_name}: ",files=ScreenshotsFil)
-
-            
-
-        
-
-            
-        
-
     except Exception as error:
         print(error)
-        await ctx.respond(f"La fecha no ha sido introducida correctamente, mes,dia y hora se expresan como un numero (3,4,18) seria 4 de marzo a las 18:00")
+        await ctx.respond(f"La fecha no ha sido introducida correctamente, mes,dia y hora se expresan como un numero (3,4,18) seria 4 de marzo a las 18:00",delete_after=10)
+    
+    Running=False
 
 bot.run(os.getenv('discord_token'))
